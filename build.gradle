@@ -33,3 +33,13 @@ compileKotlin {
 compileTestKotlin {
     kotlinOptions.jvmTarget = "1.8"
 }
+
+jar {
+    manifest {
+        attributes 'Main-Class' : 'com.matthewrussell.trchunkbrowser.app.MainKt'
+    }
+
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+}

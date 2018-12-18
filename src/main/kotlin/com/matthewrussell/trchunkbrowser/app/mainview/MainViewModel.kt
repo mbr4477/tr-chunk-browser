@@ -45,7 +45,7 @@ class MainViewModel : ViewModel() {
                 val new = retrieved.filter { !segments.map { it.label }.contains(it.label) }
                 if (new.isEmpty()) snackBarMessages.onNext(messages["label_already_exists"])
                 segments.addAll(new)
-                segments.setAll(segments.sortedBy { it.label })
+                segments.setAll(segments.sortedBy { it.label.padStart(3, '0') })
             }
             .subscribe()
     }
@@ -79,7 +79,7 @@ class MainViewModel : ViewModel() {
 
     fun select(segment: AudioSegment) {
         if (!selectedSegments.contains(segment)) selectedSegments.add(segment)
-        selectedSegments.sortBy { it.label }
+        selectedSegments.sortBy { it.label.padStart(3, '0') }
     }
 
     fun deselect(segment: AudioSegment) {

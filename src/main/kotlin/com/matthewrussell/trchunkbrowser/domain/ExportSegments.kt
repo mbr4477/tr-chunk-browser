@@ -66,7 +66,6 @@ class ExportSegments(private val segments: List<AudioSegment>) {
         val books = segments.map { it.sourceMetadata.book }.distinct()
         val chapters = segments.map { it.sourceMetadata.chapter }.distinct()
         if (books.size > 1 && chapters.size > 1) return Single.just(MergeResult.ERROR_DIFFERENT_BOOK_CHAPTER)
-        println(segments)
         return Single.fromCallable {
             val outputFiles = segments.map { makeWavFile(it) }
             val metadata = outputFiles.first().metadata

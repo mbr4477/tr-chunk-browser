@@ -35,6 +35,7 @@ compileTestKotlin {
 }
 
 jar {
+    archiveName = 'tr-chunk-browser.jar'
     manifest {
         attributes 'Main-Class' : 'com.matthewrussell.trchunkbrowser.app.MainKt'
     }

@@ -1,12 +1,20 @@
 language: kotlin
 jdk:
-  - oraclejdk8
+- oraclejdk8
 before_cache:
-  - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
-  - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
+- rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
+- rm -fr $HOME/.gradle/caches/*/plugin-resolution/
 cache:
   directories:
-    - $HOME/.gradle/caches/
-    - $HOME/.gradle/wrapper/
+  - "$HOME/.gradle/caches/"
+  - "$HOME/.gradle/wrapper/"
 script:
-  - ./gradlew build
+- "./gradlew build"
+deploy:
+  provider: releases
+  api_key:
+    secure: WqEyylwpkTIyu4YANkGyCILSfHmPbAaMDQOIIUAS32/uPCoK0VS9EDrnmBLtZrAb7ejZxJRsXzpk67fi9LWSIdbtIZcIOr5gt9KiqY80tGEGFJ+J9NODbMepuL2u/GouyeUYwdfEx8ofLgxqIl9TnXx5rT66/fxJQIQLvR8YQpvb1jj3rAcOBd29DYClJRxNhsDxbyztBK68JauA6H2RJzhqe4Tr9X2rYQtwTGHjxTSYJXI/DLzdPsstlXOldmPlx+RxoyLfXcY4m2cLeXTA/a5JkZxf5AriH7U6nrFUJJrepw1aEmJn/ULwoJaEhHcOQsvKtRqI3I2pExg3mY7QlwQdvEaEnuEPYOkZ2ljTuGNnqNNVFfytVselIHM0O4QPyOoX7ETM01Ly//iCZ45zwBvTF/cySv/abez0hCwpABCEZnLQZiSVTbJ+Lg+kjWhQ35tJwMHARjQxTV8INeSmdQgjGE5YfgBa9y/qff4KMOhIzodEp15J2dxIS8q30fY9tc9Ql5Zu6FfqnjqxHYRN0h7KGCIVS5KiALYcy7fjZTg4xSRF4SiEi+7HC5JwDRwdycwRoU5JMDzVF0+dKQr3sO4C5ND7dAlQxJWZmq4lXPrpV9dRBrIJQ/2l94SUBZybTmwnlId4rnG5c5mzHOcTBQpCibnkuMvb3gp6iMun8pQ=
+  file: build/libs/tr-chunk-browser.jar
+  on:
+    repo: mbr4477/tr-chunk-browser
+    tags: true

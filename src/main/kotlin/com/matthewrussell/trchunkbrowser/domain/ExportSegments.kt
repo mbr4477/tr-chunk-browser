@@ -18,7 +18,7 @@ class ExportSegments(private val segments: List<AudioSegment>) {
 
     private val cache = hashMapOf<File, WavFile>()
 
-    fun makeWavFile(segment: AudioSegment): WavFile {
+    private fun makeWavFile(segment: AudioSegment): WavFile {
         // Get the source wav file
         val source = segment.src
         val file = if (cache.containsKey(source)) {
@@ -82,7 +82,7 @@ class ExportSegments(private val segments: List<AudioSegment>) {
         }
     }
 
-    fun generateFileName(sourceFile: File, newMetadata: Metadata): String {
+    private fun generateFileName(sourceFile: File, newMetadata: Metadata): String {
         val parts = sourceFile.nameWithoutExtension.split("_")
         val verseWidth = parts.filter { it.startsWith("v") }.last().split("-").first().length - 1
         val chapterWidth = parts.filter { it.startsWith("c") }.last().length - 1

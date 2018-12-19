@@ -209,7 +209,7 @@ class MainView : View() {
                             val duration = segment.end - segment.begin
                             val minutes = floor(duration / 60.0)
                             val seconds = duration - minutes * 60.0
-                            label("${messages[segment.sourceMetadata.book]} ${segment.sourceMetadata.chapter}:${segment.label}") {
+                            label("${messages[segment.sourceMetadata.slug]} ${segment.sourceMetadata.chapter}:${segment.label}") {
                                 addClass(MainViewStyles.segmentTitle)
                             }
                             val take = segment.src.nameWithoutExtension.split("_").filter { it.startsWith("t") }.last()

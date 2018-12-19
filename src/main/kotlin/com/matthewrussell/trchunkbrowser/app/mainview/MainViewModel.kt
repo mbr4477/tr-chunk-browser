@@ -58,6 +58,7 @@ class MainViewModel : ViewModel() {
     fun convertDirectory(dir: File) {
         ConvertDirectory(dir)
             .convert()
+            .onErrorComplete()
             .subscribeOn(Schedulers.io())
             .subscribe {
                 snackBarMessages.onNext(messages["done_exporting"])

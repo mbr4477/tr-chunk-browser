@@ -5,6 +5,7 @@ import com.matthewrussell.trchunkbrowser.domain.ConvertDirectory
 import com.matthewrussell.trchunkbrowser.domain.ExportSegments
 import com.matthewrussell.trchunkbrowser.domain.GetWavSegments
 import com.matthewrussell.trchunkbrowser.model.AudioSegment
+import io.reactivex.Completable
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject
 import javafx.beans.property.SimpleListProperty
@@ -58,11 +59,16 @@ class MainViewModel : ViewModel() {
     fun convertDirectory(dir: File) {
         ConvertDirectory(dir)
             .convert()
-            .onErrorComplete()
-            .subscribeOn(Schedulers.io())
-            .subscribe {
+            .doOnComplete {
                 snackBarMessages.onNext(messages["done_exporting"])
             }
+            .onErrorResumeNext {
+                Completable.fromAction {
+                    snackBarMessages.onNext(messages["export_error"])
+                }
+            }
+            .subscribeOn(Schedulers.io())
+            .subscribe()
     }
 
     fun split(outputDir: File) {

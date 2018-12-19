@@ -5,12 +5,16 @@ import java.io.File
 
 class ConvertDirectory(private val root: File) {
     fun convert(outputDir: File = root.parentFile): Completable {
-        return Completable.fromAction {
-            // copy to the output directory
-            val outDir = outputDir.resolve("${root.name}-out")
-            root.copyRecursively(outDir)
-            convertInPlace(outDir)
-        }
+        val outDir = outputDir.resolve("${root.name}-out")
+        return Completable
+            .fromAction {
+                // copy to the output directory
+                root.copyRecursively(outDir, overwrite = true)
+                convertInPlace(outDir)
+            }
+            .doOnError {
+                outDir.deleteRecursively()
+            }
     }
 
     private fun convertInPlace(dir: File) {

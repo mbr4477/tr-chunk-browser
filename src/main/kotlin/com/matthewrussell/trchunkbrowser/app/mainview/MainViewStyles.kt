@@ -17,6 +17,7 @@ class MainViewStyles : Stylesheet() {
         val segmentListItem by cssclass()
         val segmentTitle by cssclass()
         val segmentTime by cssclass()
+        val segmentInfo by cssclass()
         val segmentList by cssclass()
         val bigDragTarget by cssclass()
         val jfxSnackbarContent by cssclass()
@@ -77,9 +78,13 @@ class MainViewStyles : Stylesheet() {
                     cursor = Cursor.HAND
                     effect = DropShadow(6.0, 0.0, 2.0, shadowColor)
                     padding = box(15.px)
+                    spacing = 5.px
                     segmentTitle {
                         textFill = textColor
                         fontWeight = FontWeight.BOLD
+                    }
+                    segmentInfo {
+                        textFill = faintBorderColor
                     }
                     segmentTime {
                         textFill = faintBorderColor

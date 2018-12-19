@@ -189,7 +189,7 @@ class MainView : View() {
                         label("${messages[segment.sourceMetadata.book]} ${segment.sourceMetadata.chapter}:${segment.label}") {
                             addClass(MainViewStyles.segmentTitle)
                         }
-                        val take= segment.src.nameWithoutExtension.split("_").filter { it.startsWith("t") }.last().substring(1)
+                        val take = segment.src.nameWithoutExtension.split("_").filter { it.startsWith("t") }.last().substring(1)
                         label("Take $take") {
                             addClass(MainViewStyles.segmentInfo)
                         }

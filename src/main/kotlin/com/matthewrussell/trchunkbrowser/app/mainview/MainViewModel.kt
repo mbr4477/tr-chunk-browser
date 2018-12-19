@@ -1,9 +1,11 @@
 package com.matthewrussell.trchunkbrowser.app.mainview
 
 import com.github.thomasnield.rxkotlinfx.observeOnFx
+import com.matthewrussell.trchunkbrowser.domain.ConvertDirectory
 import com.matthewrussell.trchunkbrowser.domain.ExportSegments
 import com.matthewrussell.trchunkbrowser.domain.GetWavSegments
 import com.matthewrussell.trchunkbrowser.model.AudioSegment
+import io.reactivex.Completable
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject
 import javafx.beans.property.SimpleListProperty
@@ -21,8 +23,14 @@ class MainViewModel : ViewModel() {
     val selectedSegments = FXCollections.observableArrayList<AudioSegment>()
     val selectedCount = selectedSegments.sizeProperty
     val snackBarMessages = PublishSubject.create<String>()
+    val confirmConvertDirectory = PublishSubject.create<File>()
 
     fun importFile(file: File) {
+        if (file.isDirectory) {
+            confirmConvertDirectory.onNext(file)
+//            convertDirectory(file)
+            return
+        }
         if (file.extension != "wav" && file.extension != "WAV") {
             snackBarMessages.onNext(messages["not_wav_file"])
             return
@@ -45,6 +53,21 @@ class MainViewModel : ViewModel() {
                 segments.addAll(retrieved)
                 segments.setAll(segments.sortedBy { it.sort })
             }
+            .subscribe()
+    }
+
+    fun convertDirectory(dir: File) {
+        ConvertDirectory(dir)
+            .convert()
+            .doOnComplete {
+                snackBarMessages.onNext(messages["done_exporting"])
+            }
+            .onErrorResumeNext {
+                Completable.fromAction {
+                    snackBarMessages.onNext(messages["export_error"])
+                }
+            }
+            .subscribeOn(Schedulers.io())
             .subscribe()
     }
 

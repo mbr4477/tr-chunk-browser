@@ -18,7 +18,7 @@ class ExportSegments(private val segments: List<AudioSegment>) {
 
     private val cache = hashMapOf<File, WavFile>()
 
-    fun makeWavFile(segment: AudioSegment): WavFile {
+    private fun makeWavFile(segment: AudioSegment): WavFile {
         // Get the source wav file
         val source = segment.src
         val file = if (cache.containsKey(source)) {
@@ -63,7 +63,7 @@ class ExportSegments(private val segments: List<AudioSegment>) {
     }
 
     fun exportMerged(outputDir: File): Single<MergeResult> {
-        val books = segments.map { it.sourceMetadata.book }.distinct()
+        val books = segments.map { it.sourceMetadata.slug }.distinct()
         val chapters = segments.map { it.sourceMetadata.chapter }.distinct()
         if (books.size > 1 && chapters.size > 1) return Single.just(MergeResult.ERROR_DIFFERENT_BOOK_CHAPTER)
         return Single.fromCallable {
@@ -82,10 +82,10 @@ class ExportSegments(private val segments: List<AudioSegment>) {
         }
     }
 
-    fun generateFileName(sourceFile: File, newMetadata: Metadata): String {
+    private fun generateFileName(sourceFile: File, newMetadata: Metadata): String {
         val parts = sourceFile.nameWithoutExtension.split("_")
         val verseWidth = parts.filter { it.startsWith("v") }.last().split("-").first().length - 1
         val chapterWidth = parts.filter { it.startsWith("c") }.last().length - 1
-        return newMetadata.toFilename(parts[1], parts.last(), chapterWidth, verseWidth)
+        return newMetadata.toFilename(parts.last(), chapterWidth, verseWidth)
     }
 }
